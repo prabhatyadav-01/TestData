@@ -1,0 +1,392 @@
+:root {
+    /* Gen Z Vibrant Colors */
+    --bg-anim-1: #ff9a9e;
+    --bg-anim-2: #fecfef;
+    --bg-anim-3: #a18cd1;
+    --bg-anim-4: #fbc2eb;
+    
+    /* Neumorphic / Glassmorphic Card Settings */
+    --card-bg: rgba(255, 255, 255, 0.4);
+    --card-border: rgba(255, 255, 255, 0.5);
+    
+    --text-primary: #1a1a2e;
+    --text-secondary: #4a4e69; 
+    --accent: #ff007f; /* Neon pink */
+    --accent-hover: #ff0055;
+    --separator: rgba(255, 255, 255, 0.3);
+    --radius: 20px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    /* Vibrant Animated Gradient Background */
+    background: linear-gradient(-45deg, var(--bg-anim-1), var(--bg-anim-2), var(--bg-anim-3), var(--bg-anim-4));
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    color: var(--text-primary);
+    overflow-x: hidden;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.ios-app {
+    max-width: 600px;
+    margin: 0 auto;
+    min-height: 100vh;
+    padding-bottom: 40px;
+}
+
+/* Nav Bar (Sticky, appears on scroll) */
+.ios-nav-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid var(--card-border);
+    z-index: 100;
+    opacity: 0; 
+    transition: opacity 0.3s;
+}
+
+.ios-nav-bar.visible {
+    opacity: 1;
+}
+
+.nav-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Header */
+.ios-header {
+    padding: 80px 20px 20px 20px;
+    text-align: center;
+}
+
+.large-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+    /* Funky Gradient Text */
+    background: linear-gradient(45deg, #ff007f, #4a00e0);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+.subtitle {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+/* Main Content */
+.ios-content {
+    padding: 0 20px;
+}
+
+/* Grouped List Style */
+.course-group {
+    margin-bottom: 35px;
+}
+
+.course-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    padding-left: 10px;
+    letter-spacing: 1px;
+}
+
+/* Glassmorphism List */
+.ios-list {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+}
+
+.ios-list-item {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.ios-list-item:active {
+    background-color: rgba(255,255,255,0.6);
+    transform: scale(0.98);
+}
+
+.ios-list-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 16px;
+    right: 16px;
+    height: 1px;
+    background-color: var(--separator);
+}
+
+.test-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.test-name {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.test-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+.test-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-primary);
+}
+
+.badge {
+    background: var(--accent);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(255, 0, 127, 0.4);
+}
+
+.chevron {
+    font-size: 22px;
+    color: var(--text-primary);
+    transition: transform 0.3s ease;
+}
+
+/* Expanded Details inline */
+.user-info-dropdown {
+    background: rgba(255, 255, 255, 0.3);
+    border-top: 1px solid var(--separator);
+    padding: 16px;
+    font-size: 15px;
+    display: none;
+}
+
+.user-info-dropdown.open {
+    display: block;
+    animation: slideDown 0.3s ease forwards;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.info-line {
+    margin-bottom: 8px;
+}
+
+.info-label {
+    font-weight: 800;
+    color: var(--accent);
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.info-text {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.ios-list-item.has-data {
+    border-left: 5px solid var(--accent);
+}
+
+/* Footer */
+.ios-footer {
+    text-align: center;
+    padding: 30px;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 13px;
+}
+
+/* Modal - Bottom Sheet */
+.ios-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: flex-end;
+}
+
+.ios-modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.ios-bottom-sheet {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    border-radius: 30px 30px 0 0;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.1, 0.82, 0.165, 1);
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.2);
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--card-border);
+}
+
+.ios-modal-overlay.active .ios-bottom-sheet {
+    transform: translateY(0);
+}
+
+.sheet-handle {
+    width: 50px;
+    height: 6px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+    margin: 12px auto;
+}
+
+.sheet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px 20px 20px;
+    border-bottom: 1px solid var(--separator);
+}
+
+.sheet-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    flex: 1;
+    text-align: center;
+    color: var(--text-primary);
+}
+
+.sheet-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.sheet-btn.bold {
+    color: var(--accent);
+}
+
+.sheet-content {
+    padding: 24px 20px;
+    overflow-y: auto;
+}
+
+/* Forms Style */
+.ios-form-group {
+    background: rgba(255,255,255,0.5);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 24px;
+    border: 1px solid var(--card-border);
+}
+
+.ios-form-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    position: relative;
+}
+
+.ios-form-row:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 16px;
+    right: 0;
+    height: 1px;
+    background-color: var(--separator);
+}
+
+.ios-form-row label {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.ios-form-row input {
+    border: none;
+    text-align: right;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--accent);
+    background: transparent;
+    outline: none;
+}
+
+textarea {
+    width: 100%;
+    border: none;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 500;
+    resize: none;
+    outline: none;
+    background: transparent;
+}
