@@ -414,25 +414,29 @@ body {
 
 .ios-form-row select.ios-select {
     border: none;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     color: var(--accent);
-    background: transparent;
+    background: rgba(0, 0, 0, 0.05);
     outline: none;
     cursor: pointer;
     appearance: none;
     -webkit-appearance: none;
-    padding-right: 20px;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23ff007f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+    padding: 6px 30px 6px 12px;
+    border-radius: 8px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23ff007f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
     background-repeat: no-repeat;
-    background-position: right center;
+    background-position: right 8px center;
     background-size: 14px;
-    text-align: right;
-    direction: rtl; /* helps right-align text natively */
+    text-align: left;
+    direction: ltr;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
 }
 
 .ios-form-row select.ios-select option {
-    direction: ltr; /* reset for options menu */
+    direction: ltr;
+    color: #1a1a2e; /* Reset to normal text color */
+    font-weight: 500;
 }
 
 textarea {
