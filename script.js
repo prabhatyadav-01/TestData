@@ -118,8 +118,27 @@ document.addEventListener('DOMContentLoaded', () => {
     initApp();
     setupScrollListener();
     setupModalListeners();
+    setupHamburgerMenu();
     setInterval(updateAllCountdowns, 60000); // Update countdowns every minute
 });
+
+function setupHamburgerMenu() {
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const headerLinks = document.getElementById('header-links');
+    
+    if (hamburgerBtn && headerLinks) {
+        hamburgerBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            headerLinks.classList.toggle('show');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!headerLinks.contains(e.target) && e.target !== hamburgerBtn) {
+                headerLinks.classList.remove('show');
+            }
+        });
+    }
+}
 
 function setupScrollListener() {
     const navBar = document.getElementById('sticky-nav');
@@ -168,6 +187,8 @@ function initApp() {
                 const target = document.getElementById(`course-group-${course.id}`);
                 const y = target.getBoundingClientRect().top + window.scrollY - 100; 
                 window.scrollTo({top: y, behavior: 'smooth'});
+                const headerLinks = document.getElementById('header-links');
+                if (headerLinks) headerLinks.classList.remove('show');
             };
             headerLinks.appendChild(btn);
         }
@@ -514,17 +535,7 @@ function setupScrollHighlighting() {
                                 }
                             }
                         }
-                        if (btn.classList.contains('header-link-btn')) {
-                            const navContainer = document.getElementById('header-links');
-                            if (navContainer) {
-                                const btnRect = btn.getBoundingClientRect();
-                                const navRect = navContainer.getBoundingClientRect();
-                                if (btnRect.left < navRect.left || btnRect.right > navRect.right) {
-                                    const scrollAmount = btnRect.left - navRect.left - (navRect.width / 2) + (btnRect.width / 2);
-                                    navContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-                                }
-                            }
-                        }
+                        // Removed scroll logic for header-link-btn as it's a dropdown now
                     } else {
                         btn.classList.remove('active');
                     }

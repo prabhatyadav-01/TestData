@@ -40,18 +40,36 @@ html, body {
 /* Header Area (Photo 1 style) */
 .main-header {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     padding: 30px 20px;
     width: 100%;
     box-sizing: border-box;
-    gap: 20px;
+    position: relative;
 }
 
 .brand-section {
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
+}
+
+.hamburger-btn {
+    background: transparent;
+    border: none;
+    font-size: 32px;
+    color: var(--text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    transition: transform 0.2s;
+}
+
+.hamburger-btn:active {
+    transform: scale(0.9);
 }
 
 .large-title {
@@ -74,17 +92,31 @@ html, body {
 }
 
 .header-links {
-    display: flex;
-    gap: 16px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    width: 100%;
-    align-items: center;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 8px;
+    position: absolute;
+    top: 90px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 12px;
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    z-index: 100;
+    width: 220px;
 }
-.header-links::-webkit-scrollbar { display: none; }
+.header-links.show {
+    display: flex;
+    animation: fadeInDown 0.2s ease-out;
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
 .header-link-btn {
     background: transparent;
@@ -93,13 +125,14 @@ html, body {
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
-    transition: color 0.2s;
+    transition: color 0.2s, background 0.2s;
     font-family: 'Plus Jakarta Sans', sans-serif;
-    padding: 0;
-    white-space: nowrap;
+    padding: 10px 12px;
+    text-align: left;
+    border-radius: 8px;
 }
-.header-link-btn:hover { color: #000; }
-.header-link-btn.active { color: #000; font-weight: 800; text-shadow: 0 0 10px rgba(0,0,0,0.1); }
+.header-link-btn:hover { color: #000; background: rgba(0,0,0,0.05); }
+.header-link-btn.active { color: #000; font-weight: 800; background: rgba(255,0,127,0.05); }
 
 /* Sticky Scrolled Nav (Photo 2 style) */
 .sticky-pill-nav {
