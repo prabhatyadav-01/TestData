@@ -303,6 +303,19 @@ body {
     font-size: 13px;
 }
 
+.watermark {
+    margin-top: 16px;
+    font-size: 14px;
+    font-weight: 800;
+    background: linear-gradient(to right, #d32585, #6a34ba);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    opacity: 0.9;
+    letter-spacing: 0.5px;
+}
+
 /* Modal - Bottom Sheet */
 .ios-modal-overlay {
     position: fixed;
