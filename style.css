@@ -35,49 +35,21 @@ body {
     padding-bottom: 40px;
 }
 
-/* Desktop-style Glassy Nav Bar (Image 2 style) */
-.desktop-nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 64px;
-    background: rgba(30, 40, 35, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+/* Header Area (Photo 1 style) */
+.main-header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    padding: 0 20px;
-    z-index: 1000;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
+    padding: 40px 60px;
+    width: 100%;
+    box-sizing: border-box;
+    flex-wrap: wrap; 
+    gap: 20px;
 }
 
-.desktop-nav.visible {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.nav-links {
+.brand-section {
     display: flex;
-    gap: 28px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-.nav-links::-webkit-scrollbar {
-    display: none;
-}
-
-/* Header */
-.ios-header {
-    padding: 120px 20px 20px 20px;
-    text-align: center;
+    flex-direction: column;
 }
 
 .large-title {
@@ -86,7 +58,6 @@ body {
     font-weight: 800;
     letter-spacing: -1px;
     margin-bottom: 8px;
-    /* Purple/Pink Gradient Text (Image 1 style) */
     background: linear-gradient(to right, #d32585, #6a34ba);
     -webkit-background-clip: text;
     background-clip: text;
@@ -100,12 +71,21 @@ body {
     color: var(--text-secondary);
 }
 
-/* Clean text links for Desktop Nav (Image 2 style) */
-.course-nav-btn {
+.header-links {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    max-width: 100%;
+}
+.header-links::-webkit-scrollbar { display: none; }
+
+.header-link-btn {
     background: transparent;
     border: none;
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 14px;
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     transition: color 0.2s;
@@ -113,15 +93,57 @@ body {
     padding: 0;
     white-space: nowrap;
 }
+.header-link-btn:hover { color: #000; }
+.header-link-btn.active { color: #000; font-weight: 800; text-shadow: 0 0 10px rgba(0,0,0,0.1); }
 
-.course-nav-btn:hover {
-    color: rgba(255, 255, 255, 0.9);
+/* Sticky Scrolled Nav (Photo 2 style) */
+.sticky-pill-nav {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: rgba(220, 205, 240, 0.6); /* Purple glassy */
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 50px;
+    padding: 8px 12px;
+    display: flex;
+    gap: 8px;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    max-width: 90%;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.sticky-pill-nav::-webkit-scrollbar { display: none; }
+
+.sticky-pill-nav.visible {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    pointer-events: auto;
 }
 
-.course-nav-btn.active {
-    color: #fff;
+.pill-btn {
+    background: transparent;
+    color: #1a1a2e;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 14px;
     font-weight: 700;
-    text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.pill-btn.active, .pill-btn:hover {
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
 /* Main Content */

@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function setupScrollListener() {
-    const navBar = document.getElementById('desktop-nav');
+    const navBar = document.getElementById('sticky-nav');
     window.addEventListener('scroll', () => {
         if (window.scrollY > 80) {
             navBar.classList.add('visible');
@@ -132,32 +132,60 @@ function setupScrollListener() {
     });
 }
 
+function getEmojiForCourse(courseName) {
+    if (courseName.includes('CHE')) return '🧪';
+    if (courseName.includes('MTH')) return '➗';
+    if (courseName.includes('ECE')) return '🔌';
+    if (courseName.includes('CSE')) return '💻';
+    if (courseName.includes('MEC')) return '⚙️';
+    return '📚';
+}
+
 function initApp() {
     const container = document.getElementById('course-container');
     container.innerHTML = '';
     
-    const navContainer = document.getElementById('course-nav');
-    if (navContainer) navContainer.innerHTML = '';
+    const headerLinks = document.getElementById('header-links');
+    if (headerLinks) headerLinks.innerHTML = '';
+
+    const stickyNav = document.getElementById('sticky-nav');
+    if (stickyNav) stickyNav.innerHTML = '';
 
     coursesData.forEach(course => {
         const group = document.createElement('div');
         group.className = 'course-group';
         group.id = `course-group-${course.id}`;
         
-        if (navContainer) {
+        const emoji = getEmojiForCourse(course.course);
+        const displayName = `${emoji} ${course.course}`;
+        
+        if (headerLinks) {
             const btn = document.createElement('button');
-            btn.className = 'course-nav-btn';
-            btn.textContent = course.course;
+            btn.className = 'header-link-btn';
+            btn.textContent = displayName;
             btn.setAttribute('data-target', course.id);
             btn.onclick = () => {
                 const target = document.getElementById(`course-group-${course.id}`);
-                const y = target.getBoundingClientRect().top + window.scrollY - 80; 
+                const y = target.getBoundingClientRect().top + window.scrollY - 100; 
                 window.scrollTo({top: y, behavior: 'smooth'});
             };
-            navContainer.appendChild(btn);
+            headerLinks.appendChild(btn);
+        }
+
+        if (stickyNav) {
+            const btn = document.createElement('button');
+            btn.className = 'pill-btn';
+            btn.textContent = displayName;
+            btn.setAttribute('data-target', course.id);
+            btn.onclick = () => {
+                const target = document.getElementById(`course-group-${course.id}`);
+                const y = target.getBoundingClientRect().top + window.scrollY - 100; 
+                window.scrollTo({top: y, behavior: 'smooth'});
+            };
+            stickyNav.appendChild(btn);
         }
         
-        group.innerHTML = `<div class="course-title">${course.course}</div>`;
+        group.innerHTML = `<div class="course-title">${displayName}</div>`;
         
         const list = document.createElement('div');
         list.className = 'ios-list';
@@ -472,14 +500,28 @@ function setupScrollHighlighting() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const id = entry.target.id.replace('course-group-', '');
-                document.querySelectorAll('.course-nav-btn').forEach(btn => {
+                document.querySelectorAll('.header-link-btn, .pill-btn').forEach(btn => {
                     if (btn.getAttribute('data-target') === id) {
                         btn.classList.add('active');
-                        const navContainer = document.getElementById('course-nav');
-                        const btnRect = btn.getBoundingClientRect();
-                        const navRect = navContainer.getBoundingClientRect();
-                        if (btnRect.left < navRect.left || btnRect.right > navRect.right) {
-                            btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                        if (btn.classList.contains('pill-btn')) {
+                            const navContainer = document.getElementById('sticky-nav');
+                            if (navContainer) {
+                                const btnRect = btn.getBoundingClientRect();
+                                const navRect = navContainer.getBoundingClientRect();
+                                if (btnRect.left < navRect.left || btnRect.right > navRect.right) {
+                                    btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                                }
+                            }
+                        }
+                        if (btn.classList.contains('header-link-btn')) {
+                            const navContainer = document.getElementById('header-links');
+                            if (navContainer) {
+                                const btnRect = btn.getBoundingClientRect();
+                                const navRect = navContainer.getBoundingClientRect();
+                                if (btnRect.left < navRect.left || btnRect.right > navRect.right) {
+                                    btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                                }
+                            }
                         }
                     } else {
                         btn.classList.remove('active');
