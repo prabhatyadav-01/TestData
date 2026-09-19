@@ -142,13 +142,19 @@ function setupHamburgerMenu() {
 
 function setupScrollListener() {
     const navBar = document.getElementById('sticky-nav');
+    const headerLinks = document.getElementById('header-links');
+    
     window.addEventListener('scroll', () => {
+        if (headerLinks && headerLinks.classList.contains('show')) {
+            headerLinks.classList.remove('show');
+        }
+        
         if (window.scrollY > 80) {
             navBar.classList.add('visible');
         } else {
             navBar.classList.remove('visible');
         }
-    });
+    }, { passive: true });
 }
 
 function getEmojiForCourse(courseName) {
