@@ -15,18 +15,22 @@
 </head>
 
 <body>
-    <div class="ios-app">
-        <!-- Top Navigation Bar -->
-        <div class="ios-nav-bar" id="nav-bar">
-            <span class="nav-title" id="nav-title">Dashboard</span>
+    <!-- Top Glassy Navigation Bar -->
+    <nav class="desktop-nav" id="desktop-nav">
+        <div class="nav-brand">
+            <i class="ph-fill ph-leaf" style="color: #f1c40f; margin-right: 8px;"></i>
+            Test Data
         </div>
+        <div class="nav-links" id="course-nav">
+            <!-- JS populates course links here -->
+        </div>
+    </nav>
 
+    <div class="ios-app">
         <header class="ios-header">
             <h1 class="large-title">Test Data (1-Term)</h1>
             <p class="subtitle">B.Tech CSE (Robotics & AI)</p>
         </header>
-
-        <nav class="course-nav" id="course-nav"></nav>
 
         <main class="ios-content" id="course-container">
             <!-- Course cards (Grouped lists) will be generated here by JS -->

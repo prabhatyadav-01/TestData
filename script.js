@@ -116,7 +116,6 @@ let userSettings = JSON.parse(localStorage.getItem('testTrackerData_ios')) || {}
 
 document.addEventListener('DOMContentLoaded', () => {
     initApp();
-    setupScrollListener();
     setupModalListeners();
     setInterval(updateAllCountdowns, 60000); // Update countdowns every minute
 });
@@ -140,7 +139,7 @@ function initApp() {
             btn.setAttribute('data-target', course.id);
             btn.onclick = () => {
                 const target = document.getElementById(`course-group-${course.id}`);
-                const y = target.getBoundingClientRect().top + window.scrollY - 130; 
+                const y = target.getBoundingClientRect().top + window.scrollY - 80; 
                 window.scrollTo({top: y, behavior: 'smooth'});
             };
             navContainer.appendChild(btn);
@@ -346,18 +345,6 @@ function updateAllCountdowns() {
     });
 }
 
-// Sticky Nav Logic
-function setupScrollListener() {
-    const navBar = document.getElementById('nav-bar');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            navBar.classList.add('visible');
-        } else {
-            navBar.classList.remove('visible');
-        }
-    });
-}
-
 // Modal Logic
 const modal = document.getElementById('edit-modal');
 const form = document.getElementById('details-form');
@@ -488,7 +475,7 @@ function setupScrollHighlighting() {
                 });
             }
         });
-    }, { rootMargin: '-130px 0px -60% 0px', threshold: 0 });
+    }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
 
     document.querySelectorAll('.course-group').forEach(group => {
         scrollObserver.observe(group);
