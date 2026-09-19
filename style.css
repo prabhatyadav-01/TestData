@@ -22,10 +22,12 @@
     -webkit-font-smoothing: antialiased;
 }
 
-body {
+html, body {
     background-color: var(--bg-color);
     color: var(--text-primary);
     overflow-x: hidden;
+    width: 100%;
+    position: relative;
 }
 
 .ios-app {
@@ -38,11 +40,12 @@ body {
 /* Header Area (Photo 1 style) */
 .main-header {
     display: flex;
-    align-items: center;
-    padding: 30px 40px;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 30px 20px;
     width: 100%;
     box-sizing: border-box;
-    gap: 40px;
+    gap: 20px;
 }
 
 .brand-section {
@@ -72,12 +75,14 @@ body {
 
 .header-links {
     display: flex;
-    gap: 24px;
+    gap: 16px;
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    flex: 1;
+    width: 100%;
     align-items: center;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px;
 }
 .header-links::-webkit-scrollbar { display: none; }
 
@@ -118,6 +123,7 @@ body {
     max-width: 90%;
     overflow-x: auto;
     scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
 }
 .sticky-pill-nav::-webkit-scrollbar { display: none; }
 
