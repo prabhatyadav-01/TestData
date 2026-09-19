@@ -117,16 +117,34 @@ let userSettings = JSON.parse(localStorage.getItem('testTrackerData_ios')) || {}
 document.addEventListener('DOMContentLoaded', () => {
     initApp();
     setupScrollListener();
+    setupModalListeners();
     setInterval(updateAllCountdowns, 60000); // Update countdowns every minute
 });
 
 function initApp() {
     const container = document.getElementById('course-container');
     container.innerHTML = '';
+    
+    const navContainer = document.getElementById('course-nav');
+    if (navContainer) navContainer.innerHTML = '';
 
     coursesData.forEach(course => {
         const group = document.createElement('div');
         group.className = 'course-group';
+        group.id = `course-group-${course.id}`;
+        
+        if (navContainer) {
+            const btn = document.createElement('button');
+            btn.className = 'course-nav-btn';
+            btn.textContent = course.course;
+            btn.setAttribute('data-target', course.id);
+            btn.onclick = () => {
+                const target = document.getElementById(`course-group-${course.id}`);
+                const y = target.getBoundingClientRect().top + window.scrollY - 130; 
+                window.scrollTo({top: y, behavior: 'smooth'});
+            };
+            navContainer.appendChild(btn);
+        }
         
         group.innerHTML = `<div class="course-title">${course.course}</div>`;
         
@@ -267,7 +285,7 @@ function initApp() {
         container.appendChild(group);
     });
 
-    setupModalListeners();
+    setupScrollHighlighting();
 }
 
 function formatTime(timeStr) {
@@ -442,5 +460,37 @@ function setupModalListeners() {
         
         closeModal();
         initApp(); // Re-render to show new data
+    });
+}
+
+let scrollObserver = null;
+
+function setupScrollHighlighting() {
+    if (scrollObserver) {
+        scrollObserver.disconnect();
+    }
+    scrollObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = entry.target.id.replace('course-group-', '');
+                document.querySelectorAll('.course-nav-btn').forEach(btn => {
+                    if (btn.getAttribute('data-target') === id) {
+                        btn.classList.add('active');
+                        const navContainer = document.getElementById('course-nav');
+                        const btnRect = btn.getBoundingClientRect();
+                        const navRect = navContainer.getBoundingClientRect();
+                        if (btnRect.left < navRect.left || btnRect.right > navRect.right) {
+                            btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                        }
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+            }
+        });
+    }, { rootMargin: '-130px 0px -60% 0px', threshold: 0 });
+
+    document.querySelectorAll('.course-group').forEach(group => {
+        scrollObserver.observe(group);
     });
 }

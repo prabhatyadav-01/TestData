@@ -104,6 +104,50 @@ body {
     color: var(--text-secondary);
 }
 
+/* Course Navigation Bar */
+.course-nav {
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
+    padding: 10px 20px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    position: sticky;
+    top: 60px; /* Directly below the 60px top nav-bar */
+    z-index: 90;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-bottom: 1px solid var(--card-border);
+    margin-bottom: 20px;
+}
+
+.course-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.course-nav-btn {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    color: var(--text-primary);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.course-nav-btn:active, .course-nav-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    transform: scale(0.95);
+}
+
 /* Main Content */
 .ios-content {
     padding: 0 20px;
