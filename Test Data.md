@@ -20,7 +20,7 @@ CHE 110:
 
 &#x20;             --> 2 CA- MCQ (Unit I to III -- 30 Question)
 
-&#x20;             --> 3 CA- MCQ (Unit I to V -- 30 Question)
+&#x20;             --> 3 CA- MCQ (Unit I to V -- 30 Question)(optional)
 
 
 
@@ -273,16 +273,4 @@ ETE: End Term Test
 MTT: Mid Term Test
 
 ETP: End Term Practical
-
-
-
-
-
-
-
-
-
-
-
-
 

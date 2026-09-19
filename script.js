@@ -3,6 +3,7 @@ const coursesData = [
     {
         id: "che110",
         course: "CHE 110",
+        totalCA: 40,
         tests: [
             { id: "che110-t1", name: "Attendance", details: "5 marks" },
             { id: "che110-t2", name: "CA 1", details: "Project Allotted (Part of 40 marks CA)" },
@@ -15,6 +16,7 @@ const coursesData = [
     {
         id: "mth165",
         course: "MTH 165",
+        totalCA: 25,
         tests: [
             { id: "mth165-t1", name: "Attendance", details: "5 marks" },
             { id: "mth165-t2", name: "CA 1", details: "Till Unit 2 (Part of 25 marks CA)" },
@@ -27,6 +29,7 @@ const coursesData = [
     {
         id: "ece131",
         course: "ECE 131",
+        totalCA: 25,
         tests: [
             { id: "ece131-t1", name: "Attendance", details: "5 marks" },
             { id: "ece131-t2", name: "CA 1", details: "Till Unit 2 (Part of 25 marks CA)" },
@@ -39,6 +42,7 @@ const coursesData = [
     {
         id: "ece132",
         course: "ECE 132",
+        totalCA: 45,
         tests: [
             { id: "ece132-t1", name: "Attendance", details: "5 marks" },
             { id: "ece132-t2", name: "CAP - WTP 1", details: "Till Mid term (Part of 45 marks includes WTP & Practical copy)" },
@@ -49,6 +53,7 @@ const coursesData = [
     {
         id: "ece181",
         course: "ECE 181",
+        totalCA: 25,
         tests: [
             { id: "ece181-t1", name: "Attendance", details: "5 marks" },
             { id: "ece181-t2", name: "CA 1", details: "3 Ques (Part of 25 marks CA)" },
@@ -61,6 +66,7 @@ const coursesData = [
     {
         id: "ece112",
         course: "ECE 112",
+        totalCA: 65,
         tests: [
             { id: "ece112-t1", name: "Attendance", details: "5 marks" },
             { id: "ece112-t2", name: "CA 1", details: "Idea based (Part of 65 marks CA)" },
@@ -71,6 +77,7 @@ const coursesData = [
     {
         id: "cse111",
         course: "CSE 111",
+        totalCA: 70,
         tests: [
             { id: "cse111-t1", name: "Attendance", details: "30 Marks" },
             { id: "cse111-t2", name: "CA 1", details: "Test (Weightage: 25% of 70 marks CA)" },
@@ -82,6 +89,7 @@ const coursesData = [
     {
         id: "mec136",
         course: "MEC 136",
+        totalCA: 25,
         tests: [
             { id: "mec136-t1", name: "Attendance", details: "5 marks" },
             { id: "mec136-t2", name: "CA 1", details: "Test (Weightage: 50% of 25 marks CA)" },
@@ -94,6 +102,7 @@ const coursesData = [
     {
         id: "mec139",
         course: "MEC 139",
+        totalCA: 45,
         tests: [
             { id: "mec139-t1", name: "Attendance", details: "5 marks" },
             { id: "mec139-t2", name: "CAP", details: "Weightage: 45 marks (includes project file)" },
@@ -133,17 +142,24 @@ function initApp() {
             
             const li = document.createElement('div');
             li.className = 'ios-list-item';
-            if (savedData.date || savedData.syllabus || savedData.notes) {
+            if (savedData.date || savedData.syllabus || savedData.notes || savedData.weightage) {
                 li.classList.add('has-data');
             }
             
             const isAttendance = test.name.toLowerCase().includes('attendance');
             
-            let badgeHtml = '';
+            let badgesHtml = '';
             if (savedData.date) {
-                const cd = calculateCountdown(savedData.date, savedData.time);
-                if (cd) {
-                    badgeHtml = `<span class="badge" id="badge-${testId}">${cd}</span>`;
+                const cdObj = calculateCountdown(savedData.date, savedData.time, savedData.endTime);
+                if (cdObj) {
+                    badgesHtml = `<div class="badge-container" id="badge-container-${testId}">`;
+                    if (cdObj.timeHtml) {
+                        badgesHtml += `<span class="badge-time">${cdObj.timeHtml}</span>`;
+                    }
+                    if (cdObj.daysHtml) {
+                        badgesHtml += `<span class="badge">${cdObj.daysHtml}</span>`;
+                    }
+                    badgesHtml += `</div>`;
                 }
             }
 
@@ -153,7 +169,7 @@ function initApp() {
                     <div class="test-desc">${test.details}</div>
                 </div>
                 <div class="test-right">
-                    ${badgeHtml}
+                    ${badgesHtml}
                     ${!isAttendance ? '<i class="ph ph-caret-right chevron"></i>' : ''}
                 </div>
             `;
@@ -169,8 +185,40 @@ function initApp() {
             dropdown.id = `dropdown-${testId}`;
             
             let dpHtml = '';
+            
+            // Tags for new metadata
+            let tagsHtml = '';
+            if (savedData.weightage) {
+                tagsHtml += `<span class="info-tag">Weight: ${savedData.weightage}%</span>`;
+                // Calculate converted marks
+                if (course.totalCA) {
+                    const converted = (course.totalCA * (savedData.weightage / 100)).toFixed(1);
+                    tagsHtml += `<span class="info-tag">Contributes: ${converted} Marks</span>`;
+                }
+            }
+            if (savedData.totalMarks) {
+                tagsHtml += `<span class="info-tag">Total Marks: ${savedData.totalMarks}</span>`;
+            }
+            if (savedData.negMarking) {
+                tagsHtml += `<span class="info-tag" style="color:var(--text-primary); background:rgba(0,0,0,0.05);">Neg: ${savedData.negMarking}</span>`;
+            }
+            if (savedData.qType) {
+                tagsHtml += `<span class="info-tag">${savedData.qType}</span>`;
+                if ((savedData.qType === 'MCQ' || savedData.qType === 'Both') && savedData.mcqTotal) {
+                    tagsHtml += `<span class="info-tag" style="background:rgba(0,0,0,0.05); color:#333;">MCQs: ${savedData.mcqAttempt || savedData.mcqTotal}/${savedData.mcqTotal}</span>`;
+                }
+                if ((savedData.qType === 'Subjective' || savedData.qType === 'Both') && savedData.subTotal) {
+                    tagsHtml += `<span class="info-tag" style="background:rgba(0,0,0,0.05); color:#333;">Subj: ${savedData.subAttempt || savedData.subTotal}/${savedData.subTotal}</span>`;
+                }
+            }
+            
+            if (tagsHtml) {
+                dpHtml += `<div class="info-tags">${tagsHtml}</div>`;
+            }
+
             if (savedData.date) {
-                dpHtml += `<div class="info-line"><span class="info-label">When:</span> <span class="info-text">${savedData.date} ${savedData.time ? savedData.time : ''}</span></div>`;
+                const timeStr = formatTimeFrame(savedData.time, savedData.endTime);
+                dpHtml += `<div class="info-line"><span class="info-label">When:</span> <span class="info-text">${savedData.date} ${timeStr ? 'at ' + timeStr : ''}</span></div>`;
             }
             if (savedData.syllabus) {
                 dpHtml += `<div class="info-line"><span class="info-label">Syllabus:</span> <span class="info-text">${savedData.syllabus}</span></div>`;
@@ -182,15 +230,15 @@ function initApp() {
             // Edit button inside dropdown
             dpHtml += `
                 <div style="margin-top: 10px; text-align: right;">
-                    <button style="color: var(--accent); background: none; border: none; font-size: 15px; font-weight: 500;" onclick="openModal('${course.id}', '${testId}')">Edit Details</button>
+                    <button style="color: var(--accent); background: none; border: none; font-size: 15px; font-weight: 500; cursor: pointer;" onclick="openModal('${course.id}', '${testId}')">Edit Details</button>
                 </div>
             `;
             dropdown.innerHTML = dpHtml;
 
-            // Click behavior: if it has data, toggle dropdown. If no data, open modal directly.
+            // Click behavior
             if (!isAttendance) {
                 li.addEventListener('click', () => {
-                    if (savedData.date || savedData.syllabus || savedData.notes) {
+                    if (savedData.date || savedData.syllabus || savedData.notes || savedData.weightage) {
                         dropdown.classList.toggle('open');
                         
                         // Rotate chevron
@@ -218,30 +266,44 @@ function initApp() {
     setupModalListeners();
 }
 
-function calculateCountdown(dateStr, timeStr) {
-    if (!dateStr) return '';
+function formatTime(timeStr) {
+    if (!timeStr) return '';
+    const [hStr, mStr] = timeStr.split(':');
+    const h = parseInt(hStr, 10);
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    const formattedH = h % 12 || 12;
+    return `${formattedH}:${mStr} ${ampm}`;
+}
+
+function formatTimeFrame(startTime, endTime) {
+    if (!startTime) return '';
+    const startF = formatTime(startTime);
+    const endF = formatTime(endTime);
+    return endF ? `${startF} - ${endF}` : startF;
+}
+
+function calculateCountdown(dateStr, timeStr, endTimeStr) {
+    if (!dateStr) return null;
     const targetDateStr = timeStr ? `${dateStr}T${timeStr}` : `${dateStr}T00:00:00`;
     const targetDate = new Date(targetDateStr);
     const now = new Date();
     const diff = targetDate - now;
     
-    let timePrefix = '';
-    if (timeStr) {
-        const [hStr, mStr] = timeStr.split(':');
-        const h = parseInt(hStr, 10);
-        const ampm = h >= 12 ? 'PM' : 'AM';
-        const formattedH = h % 12 || 12;
-        timePrefix = `${formattedH}:${mStr} ${ampm} • `;
+    let timeHtml = formatTimeFrame(timeStr, endTimeStr);
+    let daysHtml = '';
+    
+    if (diff < 0) {
+        daysHtml = 'Passed';
+    } else {
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        
+        if (days > 0) daysHtml = `${days}d left`;
+        else if (hours > 0) daysHtml = `${hours}h left`;
+        else daysHtml = `<1h left`;
     }
-    
-    if (diff < 0) return timePrefix + 'Passed';
-    
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    
-    if (days > 0) return `${timePrefix}${days}d left`;
-    if (hours > 0) return `${timePrefix}${hours}h left`;
-    return `${timePrefix}<1h left`;
+
+    return { timeHtml, daysHtml };
 }
 
 function updateAllCountdowns() {
@@ -249,9 +311,13 @@ function updateAllCountdowns() {
         course.tests.forEach(test => {
             const savedData = userSettings[test.id];
             if (savedData && savedData.date) {
-                const badge = document.getElementById(`badge-${test.id}`);
-                if (badge) {
-                    badge.textContent = calculateCountdown(savedData.date, savedData.time);
+                const container = document.getElementById(`badge-container-${test.id}`);
+                if (container) {
+                    const cdObj = calculateCountdown(savedData.date, savedData.time, savedData.endTime);
+                    let html = '';
+                    if (cdObj.timeHtml) html += `<span class="badge-time">${cdObj.timeHtml}</span>`;
+                    if (cdObj.daysHtml) html += `<span class="badge">${cdObj.daysHtml}</span>`;
+                    container.innerHTML = html;
                 }
             }
         });
@@ -273,6 +339,9 @@ function setupScrollListener() {
 // Modal Logic
 const modal = document.getElementById('edit-modal');
 const form = document.getElementById('details-form');
+const qTypeSelect = document.getElementById('test-q-type');
+const mcqDetails = document.getElementById('mcq-details');
+const subDetails = document.getElementById('sub-details');
 
 function openModal(courseId, testId) {
     const course = coursesData.find(c => c.id === courseId);
@@ -286,8 +355,24 @@ function openModal(courseId, testId) {
     
     document.getElementById('test-date').value = savedData.date || '';
     document.getElementById('test-time').value = savedData.time || '';
+    document.getElementById('test-end-time').value = savedData.endTime || '';
+    
+    document.getElementById('test-weightage').value = savedData.weightage || '';
+    document.getElementById('test-marks').value = savedData.totalMarks || '';
+    document.getElementById('test-neg-mark').value = savedData.negMarking || '';
+    
     document.getElementById('test-syllabus').value = savedData.syllabus || '';
     document.getElementById('test-notes').value = savedData.notes || '';
+    
+    qTypeSelect.value = savedData.qType || '';
+    
+    document.getElementById('mcq-total').value = savedData.mcqTotal || '';
+    document.getElementById('mcq-attempt').value = savedData.mcqAttempt || '';
+    document.getElementById('sub-total').value = savedData.subTotal || '';
+    document.getElementById('sub-attempt').value = savedData.subAttempt || '';
+    
+    // Trigger change event to show/hide sections
+    qTypeSelect.dispatchEvent(new Event('change'));
     
     modal.classList.add('active');
 }
@@ -306,6 +391,24 @@ function setupModalListeners() {
         }
     });
     
+    // Dynamic Form sections
+    qTypeSelect.addEventListener('change', (e) => {
+        const val = e.target.value;
+        if (val === 'MCQ') {
+            mcqDetails.style.display = 'block';
+            subDetails.style.display = 'none';
+        } else if (val === 'Subjective') {
+            mcqDetails.style.display = 'none';
+            subDetails.style.display = 'block';
+        } else if (val === 'Both') {
+            mcqDetails.style.display = 'block';
+            subDetails.style.display = 'block';
+        } else {
+            mcqDetails.style.display = 'none';
+            subDetails.style.display = 'none';
+        }
+    });
+    
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         
@@ -314,14 +417,18 @@ function setupModalListeners() {
         const data = {
             date: document.getElementById('test-date').value,
             time: document.getElementById('test-time').value,
+            endTime: document.getElementById('test-end-time').value,
+            weightage: document.getElementById('test-weightage').value,
+            totalMarks: document.getElementById('test-marks').value,
+            negMarking: document.getElementById('test-neg-mark').value,
             syllabus: document.getElementById('test-syllabus').value,
-            notes: document.getElementById('test-notes').value
+            notes: document.getElementById('test-notes').value,
+            qType: qTypeSelect.value,
+            mcqTotal: document.getElementById('mcq-total').value,
+            mcqAttempt: document.getElementById('mcq-attempt').value,
+            subTotal: document.getElementById('sub-total').value,
+            subAttempt: document.getElementById('sub-attempt').value,
         };
-        
-        // Save to iOS specific key so it doesn't clash with old data if they revert, 
-        // but wait, let's use the same one so they keep their data. Let's change back to original key.
-        // wait, I used testTrackerData_ios earlier in this file. Let's just use it to avoid issues, or actually I should use 'testTrackerData' so data carries over.
-        // But testTrackerData_ios is already initialized at top. Let's overwrite both.
         
         userSettings[testId] = data;
         localStorage.setItem('testTrackerData_ios', JSON.stringify(userSettings));
