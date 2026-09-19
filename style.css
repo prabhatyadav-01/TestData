@@ -43,16 +43,11 @@ html, body {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 30px 20px;
+    padding: 30px 15px;
     width: 100%;
     box-sizing: border-box;
     position: relative;
-}
-
-.brand-section {
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
+    gap: 8px;
 }
 
 .hamburger-btn {
@@ -74,21 +69,26 @@ html, body {
 
 .large-title {
     font-family: 'Outfit', sans-serif;
-    font-size: 26px;
+    font-size: 18px; /* Reduced to fit all three on one line */
     font-weight: 800;
     letter-spacing: -0.5px;
-    margin-bottom: 2px;
     background: linear-gradient(to right, #d32585, #6a34ba);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
+    flex: 1;
 }
 
-.subtitle {
-    font-size: 14px;
-    font-weight: 600;
+.middle-subtitle {
+    font-family: 'DotGothic16', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
     color: var(--text-secondary);
+    text-align: center;
+    line-height: 1.2;
+    flex: 1;
+    letter-spacing: 0.5px;
 }
 
 .header-links {
