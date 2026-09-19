@@ -225,14 +225,23 @@ function calculateCountdown(dateStr, timeStr) {
     const now = new Date();
     const diff = targetDate - now;
     
-    if (diff < 0) return 'Passed';
+    let timePrefix = '';
+    if (timeStr) {
+        const [hStr, mStr] = timeStr.split(':');
+        const h = parseInt(hStr, 10);
+        const ampm = h >= 12 ? 'PM' : 'AM';
+        const formattedH = h % 12 || 12;
+        timePrefix = `${formattedH}:${mStr} ${ampm} • `;
+    }
+    
+    if (diff < 0) return timePrefix + 'Passed';
     
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     
-    if (days > 0) return `${days}d left`;
-    if (hours > 0) return `${hours}h left`;
-    return `<1h left`;
+    if (days > 0) return `${timePrefix}${days}d left`;
+    if (hours > 0) return `${timePrefix}${hours}h left`;
+    return `${timePrefix}<1h left`;
 }
 
 function updateAllCountdowns() {
