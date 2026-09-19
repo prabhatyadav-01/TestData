@@ -116,9 +116,21 @@ let userSettings = JSON.parse(localStorage.getItem('testTrackerData_ios')) || {}
 
 document.addEventListener('DOMContentLoaded', () => {
     initApp();
+    setupScrollListener();
     setupModalListeners();
     setInterval(updateAllCountdowns, 60000); // Update countdowns every minute
 });
+
+function setupScrollListener() {
+    const navBar = document.getElementById('desktop-nav');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 80) {
+            navBar.classList.add('visible');
+        } else {
+            navBar.classList.remove('visible');
+        }
+    });
+}
 
 function initApp() {
     const container = document.getElementById('course-container');

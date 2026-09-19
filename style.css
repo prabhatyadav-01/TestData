@@ -47,20 +47,19 @@ body {
     -webkit-backdrop-filter: blur(20px);
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 0 40px;
+    justify-content: center;
+    padding: 0 20px;
     z-index: 1000;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
 }
 
-.nav-brand {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 700;
-    font-size: 20px;
-    color: #fff;
-    display: flex;
-    align-items: center;
+.desktop-nav.visible {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .nav-links {
