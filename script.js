@@ -509,7 +509,8 @@ function setupScrollHighlighting() {
                                 const btnRect = btn.getBoundingClientRect();
                                 const navRect = navContainer.getBoundingClientRect();
                                 if (btnRect.left < navRect.left || btnRect.right > navRect.right) {
-                                    btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                                    const scrollAmount = btnRect.left - navRect.left - (navRect.width / 2) + (btnRect.width / 2);
+                                    navContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
                                 }
                             }
                         }
@@ -519,7 +520,8 @@ function setupScrollHighlighting() {
                                 const btnRect = btn.getBoundingClientRect();
                                 const navRect = navContainer.getBoundingClientRect();
                                 if (btnRect.left < navRect.left || btnRect.right > navRect.right) {
-                                    btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                                    const scrollAmount = btnRect.left - navRect.left - (navRect.width / 2) + (btnRect.width / 2);
+                                    navContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
                                 }
                             }
                         }
