@@ -8,7 +8,7 @@ const coursesData = [
             { id: "che110-t1", name: "Attendance", details: "5 marks" },
             { id: "che110-t2", name: "CA 1", details: "Project Allotted (Part of 40 marks CA)" },
             { id: "che110-t3", name: "CA 2", details: "MCQ (Unit I to III -- 30 Question)" },
-            { id: "che110-t4", name: "CA 3", details: "MCQ (Unit I to V -- 30 Question)" },
+            { id: "che110-t4", name: "CA 3", details: "MCQ (Unit I to V -- 30 Question) (optional)" },
             { id: "che110-t5", name: "MTT", details: "MCQ Type (Weightage: 20 marks)" },
             { id: "che110-t6", name: "ETT", details: "MCQ Type (Weightage: 35 marks)" }
         ]
@@ -142,7 +142,7 @@ function initApp() {
             
             const li = document.createElement('div');
             li.className = 'ios-list-item';
-            if (savedData.date || savedData.syllabus || savedData.notes || savedData.weightage) {
+            if (savedData.date || savedData.syllabus || savedData.notes || savedData.weightage || savedData.isOptional) {
                 li.classList.add('has-data');
             }
             
@@ -211,6 +211,10 @@ function initApp() {
                     tagsHtml += `<span class="info-tag" style="background:rgba(0,0,0,0.05); color:#333;">Subj: ${savedData.subAttempt || savedData.subTotal}/${savedData.subTotal}</span>`;
                 }
             }
+            if (savedData.isOptional) {
+                const optColor = savedData.isOptional === 'Optional' ? '#f59e0b' : '#3b82f6';
+                tagsHtml += `<span class="info-tag" style="background:rgba(0,0,0,0.05); color:${optColor}; border: 1px solid ${optColor}; padding: 2px 6px;">${savedData.isOptional}</span>`;
+            }
             
             if (tagsHtml) {
                 dpHtml += `<div class="info-tags">${tagsHtml}</div>`;
@@ -238,7 +242,7 @@ function initApp() {
             // Click behavior
             if (!isAttendance) {
                 li.addEventListener('click', () => {
-                    if (savedData.date || savedData.syllabus || savedData.notes || savedData.weightage) {
+                    if (savedData.date || savedData.syllabus || savedData.notes || savedData.weightage || savedData.isOptional) {
                         dropdown.classList.toggle('open');
                         
                         // Rotate chevron
@@ -365,6 +369,7 @@ function openModal(courseId, testId) {
     document.getElementById('test-notes').value = savedData.notes || '';
     
     qTypeSelect.value = savedData.qType || '';
+    document.getElementById('test-optional').value = savedData.isOptional || 'Mandatory';
     
     document.getElementById('mcq-total').value = savedData.mcqTotal || '';
     document.getElementById('mcq-attempt').value = savedData.mcqAttempt || '';
@@ -424,6 +429,7 @@ function setupModalListeners() {
             syllabus: document.getElementById('test-syllabus').value,
             notes: document.getElementById('test-notes').value,
             qType: qTypeSelect.value,
+            isOptional: document.getElementById('test-optional').value,
             mcqTotal: document.getElementById('mcq-total').value,
             mcqAttempt: document.getElementById('mcq-attempt').value,
             subTotal: document.getElementById('sub-total').value,
